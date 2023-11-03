@@ -107,10 +107,9 @@ bundle install
 
 ## 🔭 Future Features <a name="future-features"></a>
 
-> Describe 1 - 3 features you will add to the project.
-User Login Interface
-User comments and like history
-Report of inividual user
+User Login Interface.
+User comments and like history.
+Report of individual user.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
