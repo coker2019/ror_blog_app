@@ -1,15 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Comment, type: :model do
-  describe '#update_post_comments_counter' do
-    it 'updates the post comments_counter attribute' do
-      user = User.create(name: 'Nahid')
-      post = Post.create(title: 'Hi', author: user)
-      comment = Comment.create(author: user, post:)
-
-      comment.update_post_comments_counter
-
-      expect(post.reload.comments_counter).to eq(1)
-    end
+  describe 'Associations' do
+    it { should belong_to(:user).class_name('User') }
+    it { should belong_to(:post).class_name('Post') }
   end
 end

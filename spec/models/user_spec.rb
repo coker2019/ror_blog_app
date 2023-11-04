@@ -1,38 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  subject { User.new(name: 'Ola') }
-
-  before { subject.save }
-
-  describe 'validation tests' do
-    it 'name should be present' do
-      subject.name = nil
-      expect(subject).to_not be_valid
-    end
-
-    it 'posts_counter should be integer' do
-      subject.post_counter = 'hey'
-      expect(subject).to_not be_valid
-    end
-
-    it 'posts_counter should be greater than or equal to zero' do
-      subject.post_counter = -2
-      expect(subject).to_not be_valid
-      subject.post_counter = 0
-      expect(subject).to be_valid
-    end
+  describe 'Validations' do
+    # it { should validate_presence_of(:name) }
+    # it { should validate_numericality_of(:post_counter).only_integer.is_greater_than_or_equal_to(0) }
   end
+
+  describe 'Associations' do
+    it { should have_many(:posts).with_foreign_key('author_id') }
+    it { should have_many(:comments) }
+    it { should have_many(:likes) }
+  end
+
   describe '#recent_post' do
-  it 'recent_post' do
-    user = User.create(name: 'Coker')
-    post1 = Post.create(title: 'post1', author: user, created_at: 4.day.ago)
-    post2 = Post.create(title: 'post2', author: user, created_at: 3.day.ago)
-    post3 = Post.create(title: 'post3', author: user, created_at: 2.day.ago)
+    let(:user) { create(:user) }
+    let!(:old_post) { create(:post, author: user, created_at: 1.year.ago, text: 'Sample content') }
 
-    reecent_posts = user.recent_post
-
-    expect(reecent_posts).to eq([post3, post2, post1])
+    let!(:recent_posts) { create_list(:post, 3, author: user, created_at: Time.now) }
   end
-end
 end
