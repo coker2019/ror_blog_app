@@ -21,11 +21,11 @@ default: &default
 
 development:
   <<: *default
-  database: ror_blog_app
+  database: ola_blog_apps
   host: localhost
   username: postgres
-  password: Pas4all@1
-  port:  5432
+  password: jesus1989
+ 
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -59,11 +59,11 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: ror_blog_app
+  database: ola_blog_apps
   host: localhost
   username: postgres
-  password: Pas4all@1
-  port:  5432
+  password: jesus1989
+
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -87,6 +87,6 @@ test:
 #
 production:
   <<: *default
-  database: ror_blog_app
+  database: ola_blog_apps
   username: postgres
   password: <%= ENV["BLOG_DATABASE_PASSWORD"] %>

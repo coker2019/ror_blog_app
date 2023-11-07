@@ -1,22 +1,73 @@
 require 'rails_helper'
 
 RSpec.describe Post, type: :model do
-  describe 'Validations' do
-    it { should validate_presence_of(:title) }
-    it { should validate_length_of(:title).is_at_most(250) }
-    it { should validate_numericality_of(:comments_counter).only_integer.is_greater_than_or_equal_to(0) }
-    it { should validate_numericality_of(:likes_counter).only_integer.is_greater_than_or_equal_to(0) }
+  subject { Post.new(title: 'Happy New Year', author: User.create(name: 'Raihan')) }
+
+  before { subject.save }
+
+  describe 'validation tests' do
+    it 'title should be present' do
+      subject.title = nil
+      expect(subject).to_not be_valid
+    end
+
+    it 'title should be less than 251 chars' do
+      subject.title = 'aaaaaaaaaaaa bbbbbbbbbbbbb cccccccccccccc
+      ddddddddddd eeeeeeeeeeeeeeeee ffffffffffffffff
+      gggggggggg hhhhhhhhhhhhhhh iiiiiiiiiiiiiiiiii
+      jjjjjjjjjjjjjjjjj kkkkkkkkkkkkkkkkkkkk lllllllllllll mmmmmm
+      nnnnnnnnnnnnn oooooooooooo pppppppppppppppppp qqqqqqqqqqqqqqq' # 251 chars
+      expect(subject).to_not be_valid
+    end
+
+    it 'comments_counter should be integer' do
+      subject.comments_counter = 'How do you do'
+      expect(subject).to_not be_valid
+    end
+
+    it 'comments_counter should be greater than or equal to zero' do
+      subject.comments_counter = -1
+      expect(subject).to_not be_valid
+      subject.comments_counter = 0
+      expect(subject).to be_valid
+    end
+
+    it 'likes_counter should be integer' do
+      subject.likes_counter = 'Whats up'
+      expect(subject).to_not be_valid
+    end
+
+    it 'likes_counter should be greater than or equal to zero' do
+      subject.likes_counter = -2
+      expect(subject).to_not be_valid
+      subject.likes_counter = 0
+      expect(subject).to be_valid
+    end
   end
 
-  describe 'Associations' do
-    it { should belong_to(:author).class_name('User') }
-    it { should have_many(:likes) }
-    it { should have_many(:comments) }
+  describe '#update_user_posts_counter' do
+    it 'updates the user posts_counter attribute' do
+      user = User.create(name: 'Sintheys')
+      post = Post.create(title: 'Good mornig', author: user)
+
+      post.update_user_post_counter
+
+      expect(user.reload.post_counter).to eq(1)
+    end
   end
 
   describe '#five_most_recent_comments' do
-    let(:post) { create(:post) }
-    let!(:old_comments) { create_list(:comment, 5, post:, created_at: 1.year.ago) }
-    let!(:recent_comments) { create_list(:comment, 3, post:, created_at: Time.now) }
+    it 'returns the 5 most recent comments' do
+      user = User.create(name: 'Raihan')
+      comment1 = Comment.create(author: user, post: subject, text: 'comment 1', created_at: 5.day.ago)
+      comment2 = Comment.create(author: user, post: subject, text: 'comment 2', created_at: 4.day.ago)
+      comment3 = Comment.create(author: user, post: subject, text: 'comment 3', created_at: 3.day.ago)
+      comment4 = Comment.create(author: user, post: subject, text: 'comment 4', created_at: 2.day.ago)
+      comment5 = Comment.create(author: user, post: subject, text: 'comment 5', created_at: 1.day.ago)
+
+      reecent_comments = subject.five_most_recent_comments
+
+      expect(reecent_comments).to eq([comment5, comment4, comment3, comment2, comment1])
+    end
   end
 end
