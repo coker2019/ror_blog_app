@@ -34,7 +34,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_08_23_084504) do
   end
 
   create_table "posts", force: :cascade do |t|
-    t.integer "author_id"
+    t.bigint "author_id"
     t.string "title"
     t.text "text"
     t.integer "comments_counter"
@@ -53,4 +53,5 @@ ActiveRecord::Schema[7.1].define(version: 2023_08_23_084504) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "posts", "users", column: "author_id"
 end
