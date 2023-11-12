@@ -21,7 +21,7 @@ default: &default
 
 development:
   <<: *default
-  database: blog_development
+  database:  my_blog_app
   username: postgres
   password: jesus1989
 
@@ -57,7 +57,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: blog_test
+  database: my_blog_app
   username: postgres
   password: jesus1989
 
@@ -83,6 +83,6 @@ test:
 #
 production:
   <<: *default
-  database: blog_production
-  username: blog
+  database:  my_blog_app
+  username: postgres
   password: <%= ENV["BLOG_DATABASE_PASSWORD"] %>
