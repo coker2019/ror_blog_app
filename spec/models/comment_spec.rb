@@ -12,7 +12,7 @@ RSpec.describe Comment, type: :model do
 
     it 'increase comments count on the post' do
       expect do
-        comment.update_comment_count
+        comment.update_post_comments_counter
         post.reload
       end.to change(post, :comments_counter).by(1)
     end

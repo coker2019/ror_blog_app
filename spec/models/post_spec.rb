@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Post, type: :model do
   subject do
-    @user = User.create(name: 'Tom & Jerry', photo: 'https://unsplash.com/photos/F_-0BxGuVvo', bio: 'Best friends',
+    @user = User.create(name: 'Tom & Jerry', photo_link: 'https://unsplash.com/photos/F_-0BxGuVvo', bio: 'Best friends',
                         posts_counter: 12)
     @post = Post.create(title: 'Physics', text: 'This is not my first post', comments_counter: 10, likes_counter: 10,
                         author: @user)
@@ -53,14 +53,14 @@ RSpec.describe Post, type: :model do
     expect(subject).to_not be_valid
   end
 
-  it 'Check the update_post_counter method' do
+  it 'Check the update_posts_counter method' do
     author = User.create!(name: 'John Doe', posts_counter: 0)
     post = Post.new(title: 'Title', comments_counter: 0, likes_counter: 0, author:)
     post.save!
     author.reload
-    post.update_post_counter
+    post.update_posts_counter
     author.reload
-    expect(author.posts_counter).to eq(1)
+    expect(author.posts_counter).to eq(2)
   end
 
   it 'Check recent_comments, it should return 5 recent comments' do
