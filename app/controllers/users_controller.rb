@@ -1,9 +1,17 @@
 class UsersController < ApplicationController
   def index
-    # logic to fetch all users goes here
+    @users = User.all
   end
 
   def show
-    # logic to fetch a single user goes here
+    @user = User.find(params[:id])
+    if @user
+      @recent_posts = @user.most_recent_posts
+    else
+      flash[:alert] = 'User not found'
+      redirect_to root_path
+    end
+    # rescue ActiveRecord::RecordNotFound
+    #   redirect_to root_path
   end
 end
