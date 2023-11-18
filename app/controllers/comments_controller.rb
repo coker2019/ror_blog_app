@@ -7,14 +7,14 @@ class CommentsController < ApplicationController
 
   def create
     @user = User.find(params[:user_id])
-    @post = Post.find(params[:post_id])
-    @comment = @post.comments.new(comment_params)
-    @comment.user = @user
+    @post = Post.find(params[:comment][:post_id])
+    @comment = current_user.comments.new(comment_params)
+    @comment.author_id = current_user.id
+
     if @comment.save
-      redirect_to user_post_path(@user, @post), notice: 'Comment created successfully.'
+      redirect_to user_post_path(@user, @post), notice: 'Comment successfully created'
     else
-      flash.now[:errors] = 'No comment!'
-      render :new
+      render 'posts/show', alert: 'There was an error creating the comment'
     end
   end
 
