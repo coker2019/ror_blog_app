@@ -1,13 +1,19 @@
 class PostsController < ApplicationController
   def index
-    @user = User.find(params[:user_id])
     @posts = Post.includes(:author).where(author_id: params[:user_id])
+    @user = User.includes(:posts).find(params[:user_id])
   end
 
   def show
-    @post = Post.find(params[:id])
-    @user = User.find(@post.author_id)
-    @comments = Post.find(@post.id).comments
+    @post = Post.includes(:author).find_by(author_id: params[:user_id], id: params[:id])
+
+    if @post
+      @user = @post.author
+      @comments = @post.comments
+    else
+      flash[:alert] = 'Post not found'
+      redirect_to user_posts_path(params[:user_id])
+    end
   end
 
   def new
@@ -16,15 +22,32 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = current_user.posts.new(post_params)
-    @post.comments_counter = 0
-    @post.likes_counter = 0
+    @user = current_user
+    @post = @user.posts.new(post_params)
     if @post.save
-      redirect_to user_post_path(current_user, @post)
+      redirect_to user_post_path(@user, @post)
     else
-      render 'new'
+      puts @user
+      puts @post.errors.full_messages
+      flash.now[:errors] = 'No post!'
+      render :new
     end
   end
+
+  def destroy
+    @post = Post.find_by(author_id: params[:user_id], id: params[:id])
+    @post.destroy
+
+    if @post.destroyed?
+      flash[:notice] = 'Post deleted!'
+      redirect_to user_posts_path(@post.author)
+    else
+      flash.now[:errors] = 'Unable to delete post!'
+      redirect_to user_post_path(@post.author, @post)
+    end
+  end
+
+  private
 
   def post_params
     params.require(:post).permit(:title, :text)
