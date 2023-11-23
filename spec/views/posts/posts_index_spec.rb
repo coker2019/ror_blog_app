@@ -8,7 +8,6 @@ RSpec.describe 'posts', type: :feature do
       @post4 = Post.create(title: 'work', text: 'working on the blog app', author_id: @user.id, comments_counter: 0,
                            likes_counter: 0)
 
-
       @comment1 = Comment.create(text: 'How to be a software developer', user_id: @user.id, post_id: @post4.id)
       @comment2 = Comment.create(text: 'How to solve a crime', user_id: @user.id, post_id: @post4.id)
       @comment3 = Comment.create(text: 'Great post', user_id: @user.id, post_id: @post4.id)
