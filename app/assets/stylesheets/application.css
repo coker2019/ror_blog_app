@@ -162,3 +162,10 @@
   justify-content: right;
   margin-top: -10px;
 }
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
