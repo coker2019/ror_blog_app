@@ -12,6 +12,26 @@
   </head>
 
   <body>
+  <% if flash[:notice].present? %>
+  <div>
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+<% if flash[:alert].present? %>
+  <div>
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+
+
+  <div>
+  <% if user_signed_in? %>
+  <%= link_to "Profile", edit_user_registration_path %>
+  <%= button_to 'Sign Out', destroy_user_session_path, method: :delete %>
+<% end %>
+  </div>
+
+
     <%= yield %>
   </body>
 </html>
