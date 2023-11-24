@@ -18,6 +18,10 @@
 
 <%= form.submit 'Like' %>
 <% end %>
+<% if can?(:destroy, @post) %>
+<%= button_to 'Delete Post', user_post_path(@user, post), method: :delete, class: 'delete-btn' %>
+<% end %>
+
 </div>
 
 <% if post.recent_comments.present? %>

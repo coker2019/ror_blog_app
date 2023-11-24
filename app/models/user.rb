@@ -16,4 +16,8 @@ class User < ApplicationRecord
   def set_default_posts_counter
     self.posts_counter ||= 0
   end
+  def set_defaults
+    self.likes_counter ||= 0
+    self.comments_counter ||= 0
+  end
 end

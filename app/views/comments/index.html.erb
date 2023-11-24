@@ -1,0 +1,11 @@
+
+<h1>Comments for <%= @post.title %></h1>
+
+<% @comments.each do |comment| %>
+  <div class="comment">
+    <p><strong><%= comment.user.name %>:</strong> <%= comment.text %></p>
+     <% if can?(:destroy, comment) %>
+     <%= button_to 'Delete Comment', user_post_comment_path(@user, post, comment), method: :delete, class: "delete-btn" %>
+    <% end %>
+  </div>
+<% end %> 3.
